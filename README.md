@@ -112,3 +112,82 @@ jobs:
 ```
 
 Этот пример настроит автоматическую проверку форматирования с помощью `black`, линтинг с помощью `flake8`, тестирование с `pytest`, анализ покрытия кода с `coverage`, и отправку отчета о покрытии в Codecov.
+___
+Для автоматизации линтинга, тестирования и анализа покрытия кода для Bash-скриптов с использованием GitHub Actions можно настроить CI-пайплайн с такими инструментами, как:
+
+- **ShellCheck** для линтинга Bash-скриптов.
+- **Bats** (Bash Automated Testing System) для написания и выполнения тестов.
+- **Bashcov** (опционально) для анализа покрытия кода тестами.
+
+Вот пример конфигурации `.github/workflows/bash-ci.yml` для выполнения этих проверок в GitHub Actions:
+
+```yaml
+# .github/workflows/bash-ci.yml
+name: CI for Bash scripts
+
+on: [push, pull_request]
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Установка ShellCheck для линтинга Bash-скриптов
+      - name: Install ShellCheck
+        run: sudo apt-get install -y shellcheck
+
+      # Линтинг Bash-скриптов с помощью ShellCheck
+      - name: Lint Bash scripts
+        run: |
+          find . -name "*.sh" -print0 | xargs -0 shellcheck
+
+      # Установка Bats для тестирования Bash-скриптов
+      - name: Install Bats
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y bats
+
+      # Запуск тестов с помощью Bats
+      - name: Run Bats tests
+        run: bats tests
+
+      # (Опционально) Установка и использование bashcov для анализа покрытия
+      - name: Install Bashcov and Simplecov
+        run: |
+          gem install bashcov simplecov
+
+      - name: Run tests with coverage
+        run: |
+          bashcov bats tests
+```
+
+### Объяснение настроек:
+
+1. **Линтинг с ShellCheck**:
+   - Устанавливается и запускается **ShellCheck** для поиска ошибок и проблем в Bash-скриптах.
+   - Команда `find . -name "*.sh" -print0 | xargs -0 shellcheck` находит все файлы с расширением `.sh` и передает их на проверку ShellCheck.
+
+2. **Тестирование с Bats**:
+   - **Bats** устанавливается и используется для выполнения тестов. Тесты для Bats обычно находятся в папке `tests` и имеют расширение `.bats`.
+   - Пример простого теста в файле `tests/example.bats`:
+     ```bash
+     # tests/example.bats
+     @test "example test" {
+       run ./script.sh arg1 arg2
+       [ "$status" -eq 0 ]
+       [ "$output" = "Expected output" ]
+     }
+     ```
+
+3. **(Опционально) Анализ покрытия кода с Bashcov**:
+   - **Bashcov** используется для анализа покрытия тестами, но требует установки Ruby и SimpleCov.
+   - `bashcov bats tests` запускает тесты через Bats и анализирует покрытие кода.
+
+### Требования к директории:
+- Все Bash-скрипты должны иметь расширение `.sh`.
+- Тесты для Bats находятся в директории `tests` и имеют расширение `.bats`.
+
+Этот GitHub Actions workflow автоматически проверит Bash-скрипты на наличие ошибок, запустит тесты и (опционально) произведет анализ покрытия кода.
