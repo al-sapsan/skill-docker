@@ -23,4 +23,3 @@ The repository structure is divided into the following branches:
 
 ## Sincerely, Oleg Sokolov
 ___
-/Users/a2141/Desktop/\#_GitHub
