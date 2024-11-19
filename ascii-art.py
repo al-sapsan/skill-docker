@@ -12,11 +12,11 @@ def resize_image(image, new_width=100):
     return resized_image
 
 # Преобразуем изображение в оттенки серого
-def grayscale_image(image):
+def edit_grayscale_image(image):
     return image.convert("L")
 
 # Сопоставляем каждый пиксель с символом ASCII
-def pixels_to_ascii(image):
+def edit_pixels_to_ascii(image):
     pixels = image.getdata()
     ascii_str = ""
     for pixel in pixels:
@@ -24,7 +24,7 @@ def pixels_to_ascii(image):
     return ascii_str
 
 # Основная функция
-def image_to_ascii(image_path, new_width=100):
+def convert_image_to_ascii(image_path, new_width=100):
     try:
         image = Image.open(image_path)
     except Exception as e:
@@ -33,10 +33,10 @@ def image_to_ascii(image_path, new_width=100):
     
     # Изменение размера и преобразование в оттенки серого
     image = resize_image(image, new_width)
-    image = grayscale_image(image)
+    image = edit_grayscale_image(image)
     
     # Преобразуем пиксели в ASCII
-    ascii_str = pixels_to_ascii(image)
+    ascii_str = edit_pixels_to_ascii(image)
     
     # Форматируем строку ASCII для правильного отображения
     img_width = image.width
@@ -48,7 +48,7 @@ def image_to_ascii(image_path, new_width=100):
 
 # Пример использования
 path = "/Users/a2141/al-sapsan-git/skill-docker/drone.jpeg"
-ascii_art = image_to_ascii(path)
+ascii_art = convert_image_to_ascii(path)
 print(ascii_art)
 
 # Если вы хотите сохранить ASCII-арт в файл:
