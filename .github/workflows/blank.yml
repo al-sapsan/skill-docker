@@ -1,0 +1,28 @@
+# .github/workflows/python-app.yml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install flake8 black pytest
+      - name: Lint with flake8
+        run: |
+          flake8 .
+      - name: Format code with black
+        run: |
+          black --check .
+      - name: Test with pytest
+        run: |
+          pytest
