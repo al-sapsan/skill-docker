@@ -8,14 +8,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
       - name: Install dependencies
         run: |
-          pip install -r /src/requirements.txt
+          pip install --upgrade pip
+          pip install -r requirements.txt
           pip install flake8 black pytest
       - name: Lint with flake8
         run: |
