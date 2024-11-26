@@ -41,7 +41,7 @@ def convert_image_to_ascii(image_path, new_width=100):
     return ascii_art
 
 # Example of use
-path = "/drone.jpeg"
+path = "/app/data/drone.jpeg"
 ascii_art = convert_image_to_ascii(path)
 print(ascii_art)
 
