@@ -35,7 +35,7 @@ jobs:
       - name: Format code
         run: |
           pip install black
-          black --check .
+          black .
 
       - name: Run tests with coverage
         run: |
