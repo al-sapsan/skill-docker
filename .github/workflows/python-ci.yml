@@ -1,5 +1,5 @@
-# .github/workflows/python-app.yml
-name: python apps
+# .github/workflows/python-ci.yml
+name: CI for Python apps
 
 on:
   push:
